@@ -2,7 +2,7 @@ use std::sync::RwLock;
  
  use lazy_static::lazy_static;
  
- use crate::model::notification::Notification;
+ use crate::model::notification::{self, Notification};
  
  //* SINGLETON DATABASE
  lazy_static! {
@@ -12,5 +12,9 @@ use std::sync::RwLock;
  pub struct NotificationRepository;
  
  impl NotificationRepository {
-     
- }
+    pub fn add(notification: Notification) -> Notification {
+        NOTIFICATIONS.write().unwrap()
+            .push(notification.clone());
+        return notification;
+    }
+}
