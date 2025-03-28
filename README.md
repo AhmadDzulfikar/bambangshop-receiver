@@ -61,23 +61,23 @@ You can install Postman via this website: https://www.postman.com/downloads/
 ## Mandatory Checklists (Subscriber)
 -   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop-receiver to a new repository.
 -   **STAGE 1: Implement models and repositories**
-    -   [ ] Commit: `Create Notification model struct.`
-    -   [ ] Commit: `Create SubscriberRequest model struct.`
-    -   [ ] Commit: `Create Notification database and Notification repository struct skeleton.`
-    -   [ ] Commit: `Implement add function in Notification repository.`
-    -   [ ] Commit: `Implement list_all_as_string function in Notification repository.`
-    -   [ ] Write answers of your learning module's "Reflection Subscriber-1" questions in this README.
+    -   [X ] Commit: `Create Notification model struct.`
+    -   [X ] Commit: `Create SubscriberRequest model struct.`
+    -   [ X] Commit: `Create Notification database and Notification repository struct skeleton.`
+    -   [X ] Commit: `Implement add function in Notification repository.`
+    -   [X ] Commit: `Implement list_all_as_string function in Notification repository.`
+    -   [ X] Write answers of your learning module's "Reflection Subscriber-1" questions in this README.
 -   **STAGE 3: Implement services and controllers**
-    -   [ ] Commit: `Create Notification service struct skeleton.`
-    -   [ ] Commit: `Implement subscribe function in Notification service.`
-    -   [ ] Commit: `Implement subscribe function in Notification controller.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification service.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification controller.`
-    -   [ ] Commit: `Implement receive_notification function in Notification service.`
-    -   [ ] Commit: `Implement receive function in Notification controller.`
-    -   [ ] Commit: `Implement list_messages function in Notification service.`
-    -   [ ] Commit: `Implement list function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
+    -   [X ] Commit: `Create Notification service struct skeleton.`
+    -   [ X] Commit: `Implement subscribe function in Notification service.`
+    -   [ X] Commit: `Implement subscribe function in Notification controller.`
+    -   [X ] Commit: `Implement unsubscribe function in Notification service.`
+    -   [X ] Commit: `Implement unsubscribe function in Notification controller.`
+    -   [X ] Commit: `Implement receive_notification function in Notification service.`
+    -   [ X] Commit: `Implement receive function in Notification controller.`
+    -   [X ] Commit: `Implement list_messages function in Notification service.`
+    -   [X ] Commit: `Implement list function in Notification controller.`
+    -   [ X] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -97,3 +97,20 @@ Rust tidak mengizinkan mutasi langsung pada variabel static untuk menjamin memor
 
 Namun, Rust tidak memiliki garbage collector, sehingga tanggung jawab untuk memastikan keamanan data dalam lingkungan multi-threading ada pada pengembang. Oleh karena itu, Rust mewajibkan penggunaan mekanisme seperti lazy_static! dengan RwLock<> atau Mutex<> untuk memberikan kontrol eksplisit terhadap bagaimana data diakses dan dimodifikasi, memastikan program tetap aman dan bebas dari race condition.
 #### Reflection Subscriber-2
+> Have you explored things outside of the steps in the tutorial, for example: src/lib.rs? If not, explain why you did not do so. If yes, explain things that you have learned from those other parts of code.
+
+Ya, saya sempat mengeksplorasi kode di lib.rs, yang merupakan bagian dari aplikasi Rocket (framework web di Rust). File ini mengatur konfigurasi aplikasi, menyediakan klien HTTP global menggunakan Reqwest, serta mendefinisikan struktur untuk menangani error. Selain itu, saya juga melihat main.rs, yang berfungsi sebagai entry point dari aplikasi berbasis Rocket. Di dalamnya, aplikasi mengelola instance global reqwest::Client untuk melakukan HTTP request serta menangani pendaftaran rute API.
+
+> Since you have completed the tutorial by now and have tried to test your notification system by spawning multiple instances of Receiver, explain how Observer pattern eases you to plug in more subscribers. How about spawning more than one instance of Main app, will it still be easy enough to add to the system?
+
+Observer Pattern memudahkan penambahan subscriber karena subscriber hanya perlu mendaftarkan dirinya ke publisher, tanpa perlu mengubah logika utama. Ketika ada event baru, semua subscriber yang telah terdaftar akan otomatis menerima notifikasi, sehingga sistem tetap modular dan fleksibel.
+
+Namun, jika kita menambahkan lebih dari satu instance Main app, kompleksitas bisa meningkat. Hal ini disebabkan oleh perlunya sinkronisasi data antar publisher dan subscriber, terutama jika aplikasi berjalan dalam beberapa instance yang berbeda. Untuk mengatasi hal ini, kita mungkin perlu menambahkan mekanisme tambahan, seperti database terpusat atau message queue, guna memastikan bahwa setiap instance memiliki data subscriber yang konsisten.
+
+> Have you tried to make your own Tests, or enhance documentation on your Postman collection? If you have tried those features, tell us whether it is useful for your work (it can be your tutorial work or your Group Project).
+
+Belum sempat, tetapi saya menyadari bahwa membuat unit test akan sangat berguna, terutama dalam proyek kelompok. Dengan adanya unit tests, kita bisa:
+
+- Memverifikasi respons API secara otomatis tanpa harus mengetes secara manual.
+- Memastikan status kode dan data yang dikembalikan sesuai ekspektasi, sehingga debugging menjadi lebih cepat.
+- Meningkatkan keandalan sistem, karena kita bisa melakukan regression testing dengan lebih mudah jika ada perubahan dalam kode.
